@@ -1,0 +1,74 @@
+-- PositionHub (Ultra Compact Version)
+-- Creator: LUKEZBLOX
+
+local player = game.Players.LocalPlayer
+local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+gui.ResetOnSpawn = false
+
+-- Main Frame (ainda menor)
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 190, 0, 120)
+frame.Position = UDim2.new(0.4, 0, 0.4, 0)
+frame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+frame.Active = true
+frame.Draggable = true
+frame.Parent = gui
+
+Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 10)
+
+-- Title (preto)
+local title = Instance.new("TextLabel", frame)
+title.Size = UDim2.new(1, 0, 0, 20)
+title.BackgroundColor3 = Color3.fromRGB(120, 120, 120)
+title.Text = "PositionHub"
+title.TextColor3 = Color3.new(0, 0, 0)
+title.Font = Enum.Font.SourceSansBold
+title.TextSize = 16
+
+-- Save Button (grande e proporcional)
+local saveBtn = Instance.new("TextButton", frame)
+saveBtn.Size = UDim2.new(0.9, 0, 0, 34)
+saveBtn.Position = UDim2.new(0.05, 0, 0.25, 0)
+saveBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+saveBtn.Text = "Save position"
+saveBtn.TextColor3 = Color3.new(1, 1, 1)
+saveBtn.Font = Enum.Font.SourceSansBold
+saveBtn.TextSize = 17
+Instance.new("UICorner", saveBtn).CornerRadius = UDim.new(0, 8)
+
+-- Teleport Button (grande e proporcional)
+local teleportBtn = Instance.new("TextButton", frame)
+teleportBtn.Size = UDim2.new(0.9, 0, 0, 34)
+teleportBtn.Position = UDim2.new(0.05, 0, 0.65, 0)
+teleportBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+teleportBtn.Text = "Teleport in Position"
+teleportBtn.TextColor3 = Color3.new(1, 1, 1)
+teleportBtn.Font = Enum.Font.SourceSansBold
+teleportBtn.TextSize = 17
+Instance.new("UICorner", teleportBtn).CornerRadius = UDim.new(0, 8)
+
+-- Save logic
+local savedCFrame = nil
+
+saveBtn.MouseButton1Click:Connect(function()
+    local char = player.Character
+    if char and char:FindFirstChild("HumanoidRootPart") then
+        savedCFrame = char.HumanoidRootPart.CFrame
+        saveBtn.Text = "✅ Saved"
+        task.wait(1.5)
+        saveBtn.Text = "Save position"
+    end
+end)
+
+teleportBtn.MouseButton1Click:Connect(function()
+    if savedCFrame then
+        local char = player.Character
+        if char and char:FindFirstChild("HumanoidRootPart") then
+            char.HumanoidRootPart.CFrame = savedCFrame + Vector3.new(0, 3, 0)
+        end
+    else
+        teleportBtn.Text = "⚠️ None"
+        task.wait(1.5)
+        teleportBtn.Text = "Teleport in Position"
+    end
+end)
